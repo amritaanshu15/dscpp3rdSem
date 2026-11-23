@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#071d18">
+    <title>EcoLife — Rabbit Run</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page-shell">
+        <header class="site-header">
+            <a class="brand" href="#" aria-label="EcoLife Rabbit Run home">
+                <span class="brand-icon" aria-hidden="true">🌿</span>
+                <span class="brand-copy"><strong>EcoLife</strong><span>FIELD GAME 01</span></span>
+            </a>
+            <div class="header-title">
+                <p class="eyebrow">A FOREST SURVIVAL GAME</p>
+                <h1>Rabbit <em>Run</em></h1>
+            </div>
+            <div class="header-chip"><span class="live-dot"></span> SURVIVE 50 DAYS</div>
+        </header>
+
+        <section id="startBox" class="box start-screen">
+            <div class="start-art" aria-hidden="true">
+                <span class="sun-glow"></span>
+                <span class="art-leaf leaf-one">🍃</span>
+                <span class="art-leaf leaf-two">🌿</span>
+                <span class="art-rabbit">🐇</span>
+                <span class="art-ground"></span>
+                <span class="art-stone">🪨</span>
+            </div>
+            <div class="start-content">
+                <p class="eyebrow">THE WILD IS WAITING</p>
+                <h2>Your forest.<br><span>Your next move.</span></h2>
+                <p class="intro-copy">Choose a survivor, find food and water, and stay one step ahead of the hunters.</p>
+
+                <label for="nameInput">Your name</label>
+                <input type="text" id="nameInput" maxlength="15" placeholder="e.g. Unnati" autocomplete="given-name">
+
+                <label>Choose your animal</label>
+                <div id="animalChoice">
+                    <label class="pick">
+                        <input type="radio" name="animal" value="R" checked>
+                        <span class="pick-emoji">🐇</span><b>Rabbit</b>
+                        <small>Hides in bushes</small>
+                    </label>
+                    <label class="pick">
+                        <input type="radio" name="animal" value="Q">
+                        <span class="pick-emoji">🐿️</span><b>Squirrel</b>
+                        <small>Climbs rocks</small>
+                    </label>
+                    <label class="pick">
+                        <input type="radio" name="animal" value="U">
+                        <span class="pick-emoji">🐢</span><b>Turtle</b>
+                        <small>Swims and hides</small>
+                    </label>
+                    <label class="pick">
+                        <input type="radio" name="animal" value="H">
+                        <span class="pick-emoji">🦔</span><b>Hedgehog</b>
+                        <small>Two lives</small>
+                    </label>
+                </div>
+
+                <label for="levelInput">Difficulty</label>
+                <select id="levelInput">
+                    <option value="1">1 — Easy · Fox and eagle</option>
+                    <option value="2" selected>2 — Normal · A balanced challenge</option>
+                    <option value="3">3 — Hard · All hunters</option>
+                    <option value="4">4 — Custom · Choose the wildlife</option>
+                </select>
+
+                <div id="customBox" class="custom-box hidden">
+                    <p class="custom-heading">Build your forest <span>0–3 each</span></p>
+                    <p class="small">Choose the animals for your custom level.</p>
+                    <table id="customTable">
+                        <tr><td class="custom-emoji">🦊</td><td><b>Fox</b><small>Shortest-path chaser</small></td><td><input type="number" id="c_fox" min="0" max="3" value="1" aria-label="Number of foxes"></td></tr>
+                        <tr><td class="custom-emoji">🦅</td><td><b>Eagle</b><small>Flies over the forest</small></td><td><input type="number" id="c_eagle" min="0" max="3" value="1" aria-label="Number of eagles"></td></tr>
+                        <tr><td class="custom-emoji">🐅</td><td><b>Tiger</b><small>Moves fast, then rests</small></td><td><input type="number" id="c_tiger" min="0" max="3" value="0" aria-label="Number of tigers"></td></tr>
+                        <tr><td class="custom-emoji">🐆</td><td><b>Leopard</b><small>Can climb rocks</small></td><td><input type="number" id="c_leopard" min="0" max="3" value="0" aria-label="Number of leopards"></td></tr>
+                        <tr><td class="custom-emoji">🐍</td><td><b>Snake</b><small>Finds you in bushes</small></td><td><input type="number" id="c_snake" min="0" max="3" value="0" aria-label="Number of snakes"></td></tr>
+                        <tr><td class="custom-emoji">🐊</td><td><b>Crocodile</b><small>Waits in the ponds</small></td><td><input type="number" id="c_croc" min="0" max="3" value="0" aria-label="Number of crocodiles"></td></tr>
+                        <tr><td class="custom-emoji">🦌</td><td><b>Deer</b><small>Harmless, eats grass</small></td><td><input type="number" id="c_deer" min="0" max="3" value="2" aria-label="Number of deer"></td></tr>
+                    </table>
+                </div>
+
+                <button id="startBtn" class="primary-button"><span>Enter the forest</span><b aria-hidden="true">↗</b></button>
+                <p id="startError" class="error" role="alert"></p>
+                <p class="start-footnote"><span>✦</span> One move equals one day</p>
+            </div>
+        </section>
+
+        <main id="gameArea" class="hidden">
+            <section class="game-stage">
+                <div class="stage-heading">
+                    <div><p class="eyebrow">YOUR WORLD</p><h2>The Forest</h2></div>
+                    <div class="stage-key"><span class="live-dot"></span> LIVE MAP</div>
+                </div>
+                <div class="map-frame"><div id="board" aria-label="Forest game map"></div></div>
+                <div id="pad" class="control-pad" aria-label="Move controls">
+                    <button data-dir="U" aria-label="Move up">▲</button>
+                    <div>
+                        <button data-dir="L" aria-label="Move left">◀</button>
+                        <button data-dir="X" title="stay one day" aria-label="Stay for one day">●</button>
+                        <button data-dir="R" aria-label="Move right">▶</button>
+                    </div>
+                    <button data-dir="D" aria-label="Move down">▼</button>
+                </div>
+                <p class="hint"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrow keys to move <span>·</span> <kbd>Space</kbd> to stay</p>
+            </section>
+
+            <aside id="rightSide">
+                <section class="box player-card">
+                    <div class="panel-heading"><span class="panel-icon">✦</span><span class="eyebrow">SURVIVOR STATUS</span></div>
+                    <h3 id="playerTitle">Player</h3>
+                    <p id="abilityText" class="small"></p>
+                    <div class="stat-strip">
+                        <div><span class="stat-label">DAY</span><b><span id="dayText">0</span><i>/</i><span id="goalText">50</span></b></div>
+                        <div><span class="stat-label">SCORE</span><b id="scoreText">0</b></div>
+                        <div><span class="stat-label">LIVES</span><b id="livesText">1</b></div>
+                    </div>
+                    <label class="meter-label"><span>🌿 Food</span><span class="meter-caption">ENERGY</span></label>
+                    <div class="bar"><div id="foodBar" class="fill food"></div></div>
+                    <label class="meter-label"><span>💧 Water</span><span class="meter-caption">HYDRATION</span></label>
+                    <div class="bar"><div id="waterBar" class="fill water"></div></div>
+                    <p id="statusText"></p>
+                </section>
+
+                <section class="box info-card forecast-card">
+                    <div class="panel-heading"><span class="panel-icon">◷</span><span class="eyebrow">COMING UP</span></div>
+                    <h3>Weather & events</h3>
+                    <p id="forecastText">Nothing planned</p>
+                </section>
+                <section class="box info-card radar-card">
+                    <div class="panel-heading"><span class="panel-icon danger-icon">!</span><span class="eyebrow">KEEP WATCH</span></div>
+                    <h3>Danger radar</h3>
+                    <ul id="radarList"></ul>
+                </section>
+                <section class="box info-card log-card">
+                    <div class="panel-heading"><span class="panel-icon">≋</span><span class="eyebrow">FIELD NOTES</span></div>
+                    <h3>What happened</h3>
+                    <ul id="logList"></ul>
+                </section>
+            </aside>
+        </main>
+
+        <section id="overBox" class="box game-over hidden">
+            <span class="over-sparkle" aria-hidden="true">✦</span>
+            <p class="eyebrow">THE FOREST REMEMBERS</p>
+            <h2 id="overTitle">Game Over</h2>
+            <p id="overText"></p>
+            <button id="againBtn" class="primary-button"><span>Play again</span><b aria-hidden="true">↻</b></button>
+        </section>
+
+        <section class="bottom">
+            <section class="box reference-card">
+                <div class="section-heading"><div><p class="eyebrow">FIELD GUIDE</p><h3>Know the forest</h3></div><span class="decorative-leaf" aria-hidden="true">❋</span></div>
+                <table id="legend">
+                    <tr><td class="cell ground">🦊</td><td><b>Fox</b><span>Shortest-path chaser. Avoids bushes, water and rocks.</span></td></tr>
+                    <tr><td class="cell ground">🦅</td><td><b>Eagle</b><span>Flies over everything, moves diagonally, rests every 3rd day.</span></td></tr>
+                    <tr><td class="cell ground">🐅</td><td><b>Tiger</b><span>Moves twice while chasing, then rests.</span></td></tr>
+                    <tr><td class="cell ground">🐆</td><td><b>Leopard</b><span>Climbs rocks, so rocks are not safe from it.</span></td></tr>
+                    <tr><td class="cell ground">🐍</td><td><b>Snake</b><span>Slow, but finds you in bushes and water.</span></td></tr>
+                    <tr><td class="cell ground">🐊</td><td><b>Crocodile</b><span>Stays in ponds and bites nearby.</span></td></tr>
+                    <tr><td class="cell ground">🦌</td><td><b>Deer</b><span>Harmless, eats grass and blocks your way.</span></td></tr>
+                    <tr><td class="cell grass"></td><td><b>Grass</b><span>Food. Grows back after 15 days.</span></td></tr>
+                    <tr><td class="cell water"></td><td><b>Pond</b><span>Walk into it to drink. Less water during drought.</span></td></tr>
+                    <tr><td class="cell bush"></td><td><b>Bush</b><span>Hiding place (not for turtle).</span></td></tr>
+                    <tr><td class="cell rock"></td><td><b>Rock</b><span>Squirrel, leopard and eagle can be here.</span></td></tr>
+                    <tr><td class="cell burnt"></td><td><b>Burnt ground</b><span>Left behind after a forest fire.</span></td></tr>
+                </table>
+                <p class="small guide-tip">Tip: hover over an animal on the map to read its ability.</p>
+            </section>
+
+            <section class="box leaderboard-card">
+                <div class="section-heading"><div><p class="eyebrow">FOREST LEGENDS</p><h3>Leaderboard</h3></div><span class="trophy-icon" aria-hidden="true">🏆</span></div>
+                <table id="scoreTable">
+                    <tr><th>#</th><th>Name</th><th>Score</th><th>Days</th></tr>
+                </table>
+                <p id="scoreInfo" class="small"></p>
+                <div class="leaderboard-foot"><span class="live-dot"></span> Every run writes a new story</div>
+            </section>
+        </section>
+
+        <footer class="site-footer"><span>ECOLIFE <i>·</i> RABBIT RUN</span><span>Find your path. Leave the forest alive.</span></footer>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/draw.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
